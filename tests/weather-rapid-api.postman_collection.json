@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "e4ffcc62-04c1-4b20-9478-ce1a2740d0eb",
+		"name": "Rapid API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Weather",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-RapidAPI-Key",
+						"value": "1d75847856msha3c8730bcadede3p1de86bjsn6162510198bc",
+						"type": "text"
+					},
+					{
+						"key": "X-RapidAPI-Host",
+						"value": "weatherbit-v1-mashape.p.rapidapi.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://weatherbit-v1-mashape.p.rapidapi.com/forecast/3hourly?lat=35.5&lon=-78.5",
+					"protocol": "https",
+					"host": [
+						"weatherbit-v1-mashape",
+						"p",
+						"rapidapi",
+						"com"
+					],
+					"path": [
+						"forecast",
+						"3hourly"
+					],
+					"query": [
+						{
+							"key": "lat",
+							"value": "35.5"
+						},
+						{
+							"key": "lon",
+							"value": "-78.5"
+						}
+					]
+				},
+				"description": "Rapid API Weather by Weatherbit\n\nSee: https://rapidapi.com/weatherbit/api/weather/\n\nconnection and subscription to the API required."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

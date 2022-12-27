@@ -1,0 +1,12 @@
+.idea
+/.idea/.gitignore
+/.idea/compiler.xml
+/.idea/express-server-next.iml
+/.idea/jsLibraryMappings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+
+.env
+
+/node_modules/
