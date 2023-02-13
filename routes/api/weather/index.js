@@ -1,19 +1,22 @@
 const router = require('express').Router();
 const https = require('https');
 
+// http://localhost:9000/api/weather and some dynamic params
+router.use('/forecasts', require('./forecasts'));
+
 // Preload user profile on routes with ':paramName',
 // see: https://github.com/gothinkster/node-express-realworld-example-app/blob/master/routes/api/profiles.js
 
 // run anytime a request containing dynamic segment paramName is called
 router.param('paramName', (req, res, next, paramName) => {
-  console.log('paramName - ', paramName);
+  // console.log('paramName - ', paramName);
   req.paramName = paramName;
   return next();
 });
 
 // and etc ...
 router.param('secondParam', (req, res, next, secondParam) => {
-  console.log('secondParam - ', secondParam);
+  // console.log('secondParam - ', secondParam);
   req.secondParam = secondParam;
   return next();
 });
@@ -31,6 +34,7 @@ function toQueryString(query) {
 // http://localhost:9000/api/weather/get
 router.get('/get', (req, res) => {
   const { query } = req;
+  // console.log('[http://localhost:9000/api/weather/get] - req: ', req);
   const options = {
     hostname: 'weatherbit-v1-mashape.p.rapidapi.com',
     path: `/forecast/3hourly${toQueryString(query)}`,
