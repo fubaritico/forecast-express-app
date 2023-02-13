@@ -1,5 +1,6 @@
-const router = require('express').Router();
-const https = require('https');
+import { Request, Response, Router } from 'express';
+import https from 'https';
+export const forecastRouter = Router();
 
 const coordsList = [
   { lat: 35.5, lon: 78.5 }, // Some Place
@@ -52,12 +53,10 @@ function getCurrentDefaultForeCasts() {
 }
 
 // http://localhost:9000/api/weather/forecasts
-router.get('/', (req, res) => {
+forecastRouter.get('/', (req: Request, res: Response) => {
   getCurrentDefaultForeCasts()
     .then((response) => {
       console.log('[SUCCESS] http://localhost:9000/api/weather/forecasts - response: ', response);
       return res.status(200).send(response);
     }, (error) => res.status(500).send(error));
 });
-
-module.exports = router;
