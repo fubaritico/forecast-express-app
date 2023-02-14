@@ -1,8 +1,8 @@
 import express, { Application } from 'express';
-import './src/process';
+import '@Utils/processes';
 import http from 'http';
 import { createHttpTerminator } from 'http-terminator';
-import router from './src/routes';
+import router from '@Routes/routes';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import cors from 'cors';

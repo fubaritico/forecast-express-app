@@ -1,10 +1,11 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
     "pretty": true,
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "./dist",
     "importHelpers": true,
     "strict": true,
     "noImplicitAny": false,

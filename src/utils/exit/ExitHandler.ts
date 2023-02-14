@@ -1,4 +1,4 @@
-import { httpTerminator, server } from '../app';
+import { httpTerminator, server } from '../../../app';
 
 class ExitHandler {
     public async handleExit(code: number, timeout = 5000): Promise<void> {

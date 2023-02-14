@@ -1,6 +1,6 @@
 declare namespace Express {
     interface Request {
-        paramName: string
-        secondParam: string
+        paramName?: string
+        secondParam?: string
     }
 }

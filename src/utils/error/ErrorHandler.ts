@@ -1,10 +1,10 @@
 import { Response } from 'express';
 import { AppError, HttpCode } from './AppError';
-import { exitHandler } from '../ExitHandler';
+import { exitHandler } from '../exit/ExitHandler';
 
 class ErrorHandler {
     public handleError(error: Error | AppError, response?: Response): void {
-        console.log('handleError:');
+        console.warn('ErrorHandler::handleError - error: ', error);
         if (this.isTrustedError(error) && response) {
             this.handleTrustedError(error as AppError, response);
         } else {
