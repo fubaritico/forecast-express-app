@@ -1,7 +1,7 @@
 import https from "https";
-import {getApiRequestConfig} from "@Configs/requests";
+import { getApiRequestConfig } from "@Configs/requests";
 
-const coordsList: Coordinates[] = [
+const defaultCoordsList: Coordinates[] = [
     { lat: 35.5, lon: 78.5 }, // Some Place
     { lat: 50.63022092883518, lon: 3.0597929062754594 }, // Lille
     { lat: 40.518360, lon: -3.825185 }, // Madrid
@@ -12,10 +12,10 @@ const coordsList: Coordinates[] = [
     { lat: -34.628235, lon: -58.447033 }, // Buenos Aires
 ];
 
-export const get3HourlyWeatherService = (coords: Coordinates) => {
+export const getWeatherService = (coords: Coordinates, apiPath = '/current'): Promise<WeatherAPI.CurrentForecast> => {
     return new Promise((resolve, reject) => {
         try {
-            https.request(getApiRequestConfig(coords), (response) => {
+            https.request(getApiRequestConfig(coords, apiPath), (response) => {
                 let data = '';
 
                 response.on('data', (chunk) => {
@@ -23,10 +23,10 @@ export const get3HourlyWeatherService = (coords: Coordinates) => {
                 });
 
                 response.on('end', () => {
-                    resolve(JSON.parse(data)); // JSON response
+                    resolve(JSON.parse(data));
                 });
             }).on('error', (err) => {
-                console.error(`[ERROR] get3HourlyWeatherService - err: `, err);
+                console.error(`[ERROR] getWeatherService @ ${apiPath} - err: `, err);
                 reject(err);
             }).end();
         } catch (error) {
@@ -36,7 +36,7 @@ export const get3HourlyWeatherService = (coords: Coordinates) => {
 }
 
 export const getWeatherDefaultForecastsService = () => {
-    return Promise.all(
-        coordsList.map((coords) => get3HourlyWeatherService(coords)),
+    return Promise.all<Promise<WeatherAPI.CurrentForecast>[]>(
+        defaultCoordsList.map((coords) => getWeatherService(coords)),
     );
 }

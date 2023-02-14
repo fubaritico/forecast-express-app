@@ -12,6 +12,7 @@ import methodOverride from 'method-override';
 // this loads env vars
 dotenv.config();
 
+
 // Create global app object
 const app: Application = express();
 

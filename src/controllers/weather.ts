@@ -1,15 +1,17 @@
-import { Request, Response } from 'express';
-import {get3HourlyWeatherService, getWeatherDefaultForecastsService} from "@Services/get3HourlyWeatherService";
+import {NextFunction, Request, Response} from 'express';
+import {getWeatherService, getWeatherDefaultForecastsService} from "@Services/getWeatherService";
+import {defaultForecastsMapper} from "../mappers/defaultForecastsMapper";
 
 export const weatherController = (req: Request, res: Response) => {
-    console.log(req.query);
+    console.log('weatherController - req.query: ', req.query);
+    console.log('weatherController - req: ', req.query);
     return res.send(req.query);
 }
 
 export const getWeatherController = async (req: RequestWithCoordinates, res: Response) => {
     const { query } = req;
     try {
-        const response = await get3HourlyWeatherService(query)
+        const response = await getWeatherService(query, '/current')
 
         return res.status(200).send(response);
     } catch(err) {
@@ -17,13 +19,17 @@ export const getWeatherController = async (req: RequestWithCoordinates, res: Res
     }
 }
 
-export const getWeatherDefaultForecastsController = async (req: Request, res: Response) => {
-    console.warn('getWeatherDefaultForecastsController')
+export const getWeatherDefaultForecastsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const response = await getWeatherDefaultForecastsService()
-
-        return res.status(200).send(response);
+        res.locals.forecasts = response
+        next()
     } catch(err) {
-        return res.status(500).send(err);
+        res.status(500).send(err);
     }
+}
+
+export const mapWeatherDefaultForecastsController = (req: Request, res: Response) => {
+    const mappedResponse = defaultForecastsMapper(res.locals.forecasts)
+    res.status(200).send(mappedResponse);
 }

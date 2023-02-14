@@ -2,17 +2,30 @@ import 'express-async-errors';
 import { Router } from 'express';
 import apiController from '@Controllers/api'
 import {getErrorMiddleWare, onErrorMiddleWare, onValidationErrorMiddleware} from "@Middlewares/errors";
-import {getWeatherController, getWeatherDefaultForecastsController, weatherController} from "@Controllers/weather";
+import {
+    getWeatherController,
+    getWeatherDefaultForecastsController, mapWeatherDefaultForecastsController,
+    weatherController
+} from "@Controllers/weather";
+import {getParamNameMiddleware, getSecondParamMiddleware} from "@Middlewares/parameters";
 
 const router = Router();
 
-router.get('/api', apiController);
+router.route('/api').get(apiController);
 
-router.get('/api/weather', weatherController);
+router.route('/api/weather').get(weatherController);
 
-router.get('/api/weather/get', getWeatherController);
+router.route('/api/weather/forecasts').get(getWeatherDefaultForecastsController, mapWeatherDefaultForecastsController);
 
-router.get('/api/weather/forecasts', getWeatherDefaultForecastsController);
+router.route('/api/weather/get').get(getWeatherController);
+
+router.param('paramName', getParamNameMiddleware);
+
+router.route('/api/weather/:paramName').get(weatherController);
+
+router.param('secondParam', getSecondParamMiddleware);
+
+router.route('/api/weather/:paramName/:secondParam').get(weatherController);
 
 router.use(onValidationErrorMiddleware);
 

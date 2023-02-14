@@ -22,3 +22,4 @@ Simple Express index server based on this repository: <br>
 - Performance Best Practices for Using and Monitoring Express.js in Production [https://sematext.com/blog/expressjs-best-practices/](https://sematext.com/blog/expressjs-best-practices/)
 - [https://github.com/w3tecch/express-typescript-boilerplate](https://github.com/w3tecch/express-typescript-boilerplate)
 - Error Handling [https://expressjs.com/en/guide/error-handling.html](https://expressjs.com/en/guide/error-handling.html)
+- More error handling [https://dev.to/qbentil/how-to-write-custom-error-handler-middleware-in-expressjs-using-javascript-29j1](https://dev.to/qbentil/how-to-write-custom-error-handler-middleware-in-expressjs-using-javascript-29j1)
