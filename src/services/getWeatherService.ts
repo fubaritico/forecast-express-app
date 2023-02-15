@@ -12,10 +12,10 @@ const defaultCoordsList: Coordinates[] = [
     { lat: -34.628235, lon: -58.447033 }, // Buenos Aires
 ];
 
-export const getWeatherService = (coords: Coordinates, apiPath = '/current'): Promise<WeatherAPI.CurrentForecast> => {
+export const getWeatherService = (params: QueryParameters, apiPath = '/current'): Promise<WeatherAPI.Observations> => {
     return new Promise((resolve, reject) => {
         try {
-            https.request(getApiRequestConfig(coords, apiPath), (response) => {
+            https.request(getApiRequestConfig(params, apiPath), (response) => {
                 let data = '';
 
                 response.on('data', (chunk) => {
@@ -36,7 +36,7 @@ export const getWeatherService = (coords: Coordinates, apiPath = '/current'): Pr
 }
 
 export const getWeatherDefaultForecastsService = () => {
-    return Promise.all<Promise<WeatherAPI.CurrentForecast>[]>(
+    return Promise.all<Promise<WeatherAPI.Observations>[]>(
         defaultCoordsList.map((coords) => getWeatherService(coords)),
     );
 }

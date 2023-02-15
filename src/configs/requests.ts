@@ -1,6 +1,6 @@
 import toQueryString from "@Utils/queryString";
 
-export const getApiRequestConfig = (coords: Coordinates, path = '/forecast/hourly') => {
+export const getApiRequestConfig = (coords: QueryParameters, path = '/forecast/hourly') => {
     return {
         hostname: process.env.APP_WEATHER_API_HOST,
         path: `${path}${toQueryString(coords)}`,

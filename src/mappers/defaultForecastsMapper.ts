@@ -1,7 +1,7 @@
-type CurrentForecast = WeatherAPI.CurrentForecast
-type ForecastData = WeatherAPI.ForecastData
+type Observations = WeatherAPI.Observations
+type Observation = WeatherAPI.Observation
 
-const currentForcastDataMapper = (forecastData: ForecastData): MappedForecast => {
+const currentForcastDataMapper = (forecastData: Observation): MappedForecast => {
     const mappedForecast: MappedForecast = {}
 
     mappedForecast.description = forecastData.weather.description
@@ -19,8 +19,8 @@ const currentForcastDataMapper = (forecastData: ForecastData): MappedForecast =>
     return mappedForecast
 }
 
-export const defaultForecastsMapper = (forecasts: CurrentForecast[]): MappedForecast[] => {
-    return forecasts.map((forecast:CurrentForecast) => forecast.data.map((currentForeCastData: ForecastData) => {
+export const defaultForecastsMapper = (forecasts: Observations[]): MappedForecast[] => {
+    return forecasts.map((forecast:Observations) => forecast.data.map((currentForeCastData: Observation) => {
         return currentForcastDataMapper(currentForeCastData)
     })).flat(1)
 }

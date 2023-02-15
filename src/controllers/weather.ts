@@ -8,7 +8,7 @@ export const weatherController = (req: Request, res: Response) => {
     return res.send(req.query);
 }
 
-export const getWeatherController = async (req: RequestWithCoordinates, res: Response) => {
+export const getWeatherController = async (req: RequestWithExpectedParameters, res: Response) => {
     const { query } = req;
     try {
         const response = await getWeatherService(query, '/current')
