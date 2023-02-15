@@ -8,7 +8,11 @@ import {
 } from '@Middlewares/errors'
 import {
   getDefaultObservationsController,
+  getHourlyForecastsController,
+  getWeeklyForecastsController,
   mapDefaultObservationsController,
+  mapDetailedForecastsController,
+  mapWeeklyForecastsController,
   weatherController,
 } from '@Controllers/weatherbit'
 import {
@@ -25,6 +29,19 @@ router.route('/api/weatherbit').get(weatherController)
 router
   .route('/api/weatherbit/currents')
   .get(getDefaultObservationsController, mapDefaultObservationsController)
+
+router
+  .route('/api/weatherbit/forecasts/weekly')
+  .get(getWeeklyForecastsController, mapWeeklyForecastsController)
+
+router
+  .route('/api/weatherbit/forecasts/detail')
+  .get(
+    getWeeklyForecastsController,
+    mapWeeklyForecastsController,
+    getHourlyForecastsController,
+    mapDetailedForecastsController
+  )
 
 router.param('paramName', getParamNameMiddleware)
 

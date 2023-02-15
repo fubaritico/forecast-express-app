@@ -1,31 +1,32 @@
 import https from 'https'
-import { getApiRequestConfig } from '@Configs/requests'
+import {
+  getApiDailyForecastsRequestConfig,
+  getApiHourlyForecastsRequestConfig,
+  getApiRequestConfig,
+} from '@Configs/requests'
 
 /** Arbitrary selected locations */
 const defaultCoordsList: Coordinates[] = [
-  { lat: 35.5, lon: 78.5 }, // Some Place
-  { lat: 50.63022092883518, lon: 3.0597929062754594 }, // Lille
-  { lat: 40.51836, lon: -3.825185 }, // Madrid
-  { lat: 41.912541, lon: 12.508524 }, // Rome
-  { lat: 51.506646, lon: -0.103871 }, // London
-  { lat: 40.724997, lon: -73.990566 }, // New York
-  { lat: 35.689249, lon: 139.76238 }, // Tokyo
-  { lat: -34.628235, lon: -58.447033 }, // Buenos Aires
+  { lat: '35.5', lon: '78.5' }, // Some Place
+  { lat: '50.63022092883518', lon: '3.0597929062754594' }, // Lille
+  { lat: '40.51836', lon: '-3.825185' }, // Madrid
+  { lat: '41.912541', lon: '12.508524' }, // Rome
+  { lat: '51.506646', lon: '-0.103871' }, // London
+  { lat: '40.724997', lon: '-73.990566' }, // New York
+  { lat: '35.689249', lon: '139.76238' }, // Tokyo
+  { lat: '-34.628235', lon: '-58.447033' }, // Buenos Aires
 ]
 
 /**
  * Will request any API route with latitude and longitude by default
  *
- * @returns {Promise<WeatherAPI.Observations>}
+ * @returns {Promise<WeatherbitAPI.Observations>}
  */
-export const getWeatherService = (
-  params: QueryParameters,
-  apiPath = '/current'
-): Promise<WeatherAPI.Observations> => {
+export const getWeatherService = <T>(apiConfig: ApiConfig): Promise<T> => {
   return new Promise((resolve, reject) => {
     try {
       https
-        .request(getApiRequestConfig(params, apiPath), (response) => {
+        .request(apiConfig, (response) => {
           let data = ''
 
           response.on('data', (chunk) => {
@@ -37,7 +38,10 @@ export const getWeatherService = (
           })
         })
         .on('error', (err) => {
-          console.error(`[ERROR] getWeatherService @ ${apiPath} - err: `, err)
+          console.error(
+            `[ERROR] getWeatherService @ ${apiConfig.path} - err: `,
+            err
+          )
           reject(err)
         })
         .end()
@@ -48,10 +52,42 @@ export const getWeatherService = (
 }
 
 /**
- * Will return 10 selected weather observations
+ * Will return selected weather observations
  */
-export const getDefaultObservationsService = () => {
-  return Promise.all<Promise<WeatherAPI.Observations>[]>(
-    defaultCoordsList.map((coords) => getWeatherService(coords))
+export const getDefaultObservationsService = async () => {
+  return Promise.all<Promise<WeatherbitAPI.Observations>[]>(
+    defaultCoordsList.map((coords) =>
+      getWeatherService<WeatherbitAPI.Observations>(
+        getApiRequestConfig(coords, '/current')
+      )
+    )
+  )
+}
+
+/**
+ * Will return next 7 days forecasts for a given place defined by its latitude and longitude
+ */
+export const getWeeklyForecastsService = async (
+  parameters: QueryParameters
+) => {
+  return getWeatherService<WeatherbitAPI.ForecastDay>(
+    getApiDailyForecastsRequestConfig(
+      { ...parameters, days: 7 },
+      '/forecast/daily'
+    )
+  )
+}
+
+/**
+ * Will return next 6 hours forecasts of the current day for a given place defined by its latitude and longitude
+ */
+export const getHourlyForecastsService = async (
+  parameters: QueryParameters
+) => {
+  return getWeatherService<WeatherbitAPI.ForecastHourly>(
+    getApiHourlyForecastsRequestConfig(
+      { ...parameters, hours: 6 },
+      '/forecast/hourly'
+    )
   )
 }

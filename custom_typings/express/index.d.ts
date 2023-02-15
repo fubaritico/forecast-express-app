@@ -1,8 +1,8 @@
 declare namespace Express {
-    interface Request {
-        paramName?: string
-        secondParam?: string
+  interface Request {
+    paramName?: string
+    secondParam?: string
 
-        test: WeatherAPI.Observations[]
-    }
+    test: WeatherbitAPI.Observations[]
+  }
 }

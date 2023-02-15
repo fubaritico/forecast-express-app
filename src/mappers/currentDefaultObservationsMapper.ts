@@ -1,28 +1,28 @@
-type Observations = WeatherAPI.Observations
-type Observation = WeatherAPI.Observation
+type Observations = WeatherbitAPI.Observations
+type Observation = WeatherbitAPI.Observation
 
 const currentObservationMapper = (
   currentObservation: Observation
-): MappedForecast => {
-  const mappedForecast: MappedForecast = {}
+): MappedObservation => {
+  const mappedObservation: MappedObservation = {}
 
-  mappedForecast.description = currentObservation.weather.description
-  mappedForecast.code = currentObservation.weather.code
-  mappedForecast.icon = currentObservation.weather.icon
-  mappedForecast.city_name = currentObservation.city_name
-  mappedForecast.sunrise = currentObservation.sunrise
-  mappedForecast.sunset = currentObservation.sunset
-  mappedForecast.app_temp = currentObservation.app_temp
-  mappedForecast.coordinates = {
+  mappedObservation.description = currentObservation.weather.description
+  mappedObservation.code = currentObservation.weather.code
+  mappedObservation.icon = currentObservation.weather.icon
+  mappedObservation.city_name = currentObservation.city_name
+  mappedObservation.sunrise = currentObservation.sunrise
+  mappedObservation.sunset = currentObservation.sunset
+  mappedObservation.app_temp = currentObservation.app_temp
+  mappedObservation.coordinates = {
     lat: currentObservation.lat,
     lon: currentObservation.lon,
   }
-  return mappedForecast
+  return mappedObservation
 }
 
 export const currentDefaultObservationsMapper = (
   observationResults: Observations[]
-): MappedForecast[] => {
+): MappedObservation[] => {
   return observationResults
     .map((observationResult: Observations) =>
       observationResult.data.map((currentObservation: Observation) => {

@@ -4,12 +4,13 @@ declare global {
   /** Latitude & longitude (Degrees) */
   type Coordinates = {
     /** Latitude (Degrees) */
-    lat: number
+    lat: string
     /** Longitude (Degrees) */
-    lon: number
+    lon: string
   }
 
-  type MappedForecast = Partial<{
+  /** Current weather of a place */
+  type MappedObservation = Partial<{
     /**
      * City name
      * &city=Raleigh&country=US
@@ -28,7 +29,7 @@ declare global {
      * ex: 200 for 'Thunderstorm with light rain'
      * @see: https://www.weatherbit.io/api/codes
      * */
-    code: number
+    code: string
     /**
      * Weather icon code
      * ex: 't01d', 't02d', etc
@@ -42,5 +43,63 @@ declare global {
   }>
 
   /** List of current observations */
-  type GetCurrentDefaultObservationsResponse = MappedForecast[]
+  type GetCurrentDefaultObservationsResponse = MappedObservation[]
+
+  /** Forecast information displayed in detailed view for each incomming day */
+  type MappedForecast = {
+    /** Timestamp in local time */
+    timestamp_local?: string
+    /** Date in format "YYYY-MM-DD:HH". All datetime is in (UTC) */
+    datetime?: string
+    /** Apparent Maximum daily Temperature - default (C) */
+    app_max_temp?: number
+    /** Apparent Minimum daily Temperature - default (C) */
+    app_min_temp?: number
+    /**
+     * Icon code for forecast image display
+     * Weather icon code: 't01d', 't02d', etc
+     * @see: https://www.weatherbit.io/api/codes
+     * */
+    icon?: string
+    /**
+     * Weather Condition code
+     * ex: 200 for 'Thunderstorm with light rain'
+     * @see: https://www.weatherbit.io/api/codes
+     * */
+    code?: string
+    /** Part of the day (d = day, n = night) */
+    pod?: string
+  }
+
+  type MappedHourlyForecast = {
+    /** Temperature - Default (C) */
+    temp?: number
+    /** Timestamp in local time */
+    timestamp_local?: string
+    /** Cloud cover as a percentage (%) */
+    clouds?: number
+  }
+
+  type MappedForecastDay = MappedForecast & {
+    /** City Name */
+    city_name?: string
+    /** Weather Condition description */
+    description?: string
+    /** Temperature (Average) - default (C) Feels like */
+    temp?: number
+    /** Wind Speed (default m/s) */
+    wind_spd?: number
+    /** Relative Humidity as a percentage (%) */
+    rh?: number
+    /** Pressure (mb) */
+    pres?: number
+    /** Average Visibility default (KM) */
+    vis?: number
+    /** Dewpoint?: Average) - default (C) */
+    dewpt?: number
+    /** Weekly weather Forecasts */
+    weeklyForecasts?: MappedForecast[]
+    /** Hourly detialed forecasts */
+    hourlyForecasts?: MappedHourlyForecast[]
+  }
 }
