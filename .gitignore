@@ -1,3 +1,4 @@
+# IDE
 .idea
 /.idea/.gitignore
 /.idea/compiler.xml
@@ -7,7 +8,13 @@
 /.idea/modules.xml
 /.idea/vcs.xml
 
+
+# Environment
 .env
 
+# Folders
 /node_modules/
 /dist/
+
+# husky
+.husky
