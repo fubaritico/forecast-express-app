@@ -1,2 +1,2 @@
-import './exit/process';
-import './error/process';
+import './exit/process'
+import './error/process'

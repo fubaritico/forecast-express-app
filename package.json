@@ -64,6 +64,7 @@
       "bash -c tsc --noEmit",
       "eslint ./src --ext ts --ext tsx --ext js",
       "prettier --write ./src"
-    ]
+    ],
+    "*": ["echo \"Precommit script: lint-staged and types copy\""]
   }
 }

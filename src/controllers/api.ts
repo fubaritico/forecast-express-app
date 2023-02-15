@@ -1,3 +1,3 @@
 export default (req, res) => {
-    res.status(200).send('All is fine');
+  res.status(200).send('All is fine')
 }
