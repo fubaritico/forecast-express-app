@@ -7,38 +7,32 @@ import {
   onValidationErrorMiddleware,
 } from '@Middlewares/errors'
 import {
-  getWeatherController,
-  getWeatherDefaultForecastsController,
-  mapWeatherDefaultForecastsController,
+  getDefaultObservationsController,
+  mapDefaultObservationsController,
   weatherController,
-} from '@Controllers/weather'
+} from '@Controllers/weatherbit'
 import {
-  getParamNameMiddleware,
-  getSecondParamMiddleware,
+  getParamNameMiddleware, // Simple experiment
+  getSecondParamMiddleware, // Simple experiment
 } from '@Middlewares/parameters'
 
 const router = Router()
 
 router.route('/api').get(apiController)
 
-router.route('/api/weather').get(weatherController)
+router.route('/api/weatherbit').get(weatherController)
 
 router
-  .route('/api/weather/forecasts')
-  .get(
-    getWeatherDefaultForecastsController,
-    mapWeatherDefaultForecastsController
-  )
-
-router.route('/api/weather/get').get(getWeatherController)
+  .route('/api/weatherbit/currents')
+  .get(getDefaultObservationsController, mapDefaultObservationsController)
 
 router.param('paramName', getParamNameMiddleware)
 
-router.route('/api/weather/:paramName').get(weatherController)
+router.route('/api/weatherbit/:paramName').get(weatherController)
 
 router.param('secondParam', getSecondParamMiddleware)
 
-router.route('/api/weather/:paramName/:secondParam').get(weatherController)
+router.route('/api/weatherbit/:paramName/:secondParam').get(weatherController)
 
 router.use(onValidationErrorMiddleware)
 

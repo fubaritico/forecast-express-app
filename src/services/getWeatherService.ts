@@ -1,6 +1,7 @@
 import https from 'https'
 import { getApiRequestConfig } from '@Configs/requests'
 
+/** Arbitrary selected locations */
 const defaultCoordsList: Coordinates[] = [
   { lat: 35.5, lon: 78.5 }, // Some Place
   { lat: 50.63022092883518, lon: 3.0597929062754594 }, // Lille
@@ -12,6 +13,11 @@ const defaultCoordsList: Coordinates[] = [
   { lat: -34.628235, lon: -58.447033 }, // Buenos Aires
 ]
 
+/**
+ * Will request any API route with latitude and longitude by default
+ *
+ * @returns {Promise<WeatherAPI.Observations>}
+ */
 export const getWeatherService = (
   params: QueryParameters,
   apiPath = '/current'
@@ -41,7 +47,10 @@ export const getWeatherService = (
   })
 }
 
-export const getWeatherDefaultForecastsService = () => {
+/**
+ * Will return 10 selected weather observations
+ */
+export const getDefaultObservationsService = () => {
   return Promise.all<Promise<WeatherAPI.Observations>[]>(
     defaultCoordsList.map((coords) => getWeatherService(coords))
   )

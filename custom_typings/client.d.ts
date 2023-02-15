@@ -9,10 +9,6 @@ declare global {
     lon: number
   }
 
-  type Test = {
-    test: string
-  }
-
   type MappedForecast = Partial<{
     /**
      * City name
@@ -45,5 +41,6 @@ declare global {
     sunset: string
   }>
 
-  type Observation = MappedForecast
+  /** List of current observations */
+  type GetCurrentDefaultObservationsResponse = MappedForecast[]
 }
