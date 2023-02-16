@@ -28,6 +28,7 @@
     "jsonwebtoken": "7.1.9",
     "method-override": "2.3.5",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.4",
     "morgan": "1.7.0",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
@@ -65,6 +66,8 @@
       "eslint ./src --ext ts --ext tsx --ext js",
       "prettier --write ./src"
     ],
-    "*": ["echo \"Precommit script: lint-staged and types copy\""]
+    "*": [
+      "echo \"Precommit script: lint-staged and types copy\""
+    ]
   }
 }

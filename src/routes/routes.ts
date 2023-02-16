@@ -12,7 +12,7 @@ import {
   getWeeklyForecastsController,
   mapDefaultObservationsController,
   mapDetailedForecastsController,
-  mapWeeklyForecastsController,
+  mapDailyForecastsController,
   weatherController,
 } from '@Controllers/weatherbit'
 import {
@@ -32,13 +32,13 @@ router
 
 router
   .route('/api/weatherbit/forecasts/weekly')
-  .get(getWeeklyForecastsController, mapWeeklyForecastsController)
+  .get(getWeeklyForecastsController, mapDailyForecastsController)
 
 router
   .route('/api/weatherbit/forecasts/detail')
   .get(
     getWeeklyForecastsController,
-    mapWeeklyForecastsController,
+    mapDailyForecastsController,
     getHourlyForecastsController,
     mapDetailedForecastsController
   )

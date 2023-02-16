@@ -1,21 +1,30 @@
+import { applyCelsiusDegreesShort, applyPercentage } from '@Utils/units'
+import { timestampLocalToProps, round } from '@Utils/convert'
+
 type ForecastHour = WeatherbitAPI.ForecastHour
 
 export const hourlyDetailedForecastsMapper = (
   forecastHours: ForecastHour[]
 ): MappedHourlyForecast => ({
   temperatures: forecastHours
-    .map((forecastHour) => {
+    .map((forecastHour): TemperatureForecast => {
       return {
-        temp: forecastHour.temp,
-        timestamp_local: forecastHour.timestamp_local,
+        temperature: {
+          value: forecastHour.temp,
+          display: applyCelsiusDegreesShort(round(forecastHour.temp)),
+        },
+        timestampLocal: timestampLocalToProps(forecastHour.timestamp_local),
       }
     })
     .filter((_, i) => i < 7),
   chancesOfRain: forecastHours
-    .map((forecastHour) => {
+    .map((forecastHour): RelativeHumidityForecast => {
       return {
-        clouds: forecastHour.clouds,
-        timestamp_local: forecastHour.timestamp_local,
+        relativeHumidity: {
+          value: forecastHour.rh,
+          display: applyPercentage(forecastHour.rh),
+        },
+        timestampLocal: timestampLocalToProps(forecastHour.timestamp_local),
       }
     })
     .filter((_, i) => i % 3 === 0),

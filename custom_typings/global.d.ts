@@ -4,8 +4,6 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 export {}
 
-// TODO: distinguish forecast(future) & observation(present)
-
 declare global {
   /** Recommended params, otherwise params below can be used */
   type LocationParams = Partial<Coordinates>
@@ -237,17 +235,17 @@ declare global {
       snow_depth?: number
       /** Accumulated precipitation since last forecast point - default (mm) */
       precip?: number
-      /** Temperature?: Average) - default (C) */
+      /** Temperature (Average) - default (°C) */
       temp?: number
-      /** Dewpoint?: Average) - default (C) */
+      /** Dewpoint (Average) - default (°C) */
       dewpt?: number
-      /** Maximum daily Temperature - default (C) */
+      /** Maximum daily Temperature - default (°C) */
       max_temp?: number
-      /** Minimum daily Temperature - default (C) */
+      /** Minimum daily Temperature - default (°C) */
       min_temp?: number
-      /** Apparent Maximum daily Temperature - default (C) */
+      /** Apparent Maximum daily Temperature - default (°C) */
       app_max_temp?: number
-      /** Apparent Minimum daily Temperature - default (C) */
+      /** Apparent Minimum daily Temperature - default (°C) */
       app_min_temp?: number
       /** Relative Humidity as a percentage (%) */
       rh?: number
@@ -324,11 +322,11 @@ declare global {
       snow_depth?: number
       /** Accumulated precipitation since last forecast point. Default (mm) */
       precip?: number
-      /** Temperature - Default (C) */
+      /** Temperature - Default (°C) */
       temp?: number
-      /** Dewpoint - Default (C) */
+      /** Dewpoint - Default (°C) */
       dewpt?: number
-      /** Apparent Temperature - Default (C) */
+      /** Apparent Temperature - Default (°C) */
       app_temp?: number
       /** Relative Humidity as a percentage (%) */
       rh?: number

@@ -10,9 +10,9 @@ export const getApiRequestConfig = (
     hostname: isRapidApi
       ? process.env.APP_RAPID_API_WEATHER_API_HOST
       : process.env.APP_WEATHER_API_HOST,
-    path: `${(prefix && !isRapidApi) ?? prefix}${path}${toQueryString(
+    path: `${prefix && !isRapidApi ? prefix : ''}${path}${toQueryString(
       parameters
-    )}${!isRapidApi ?? `&key=${process.env.APP_WEATHER_API_KEY}`}`,
+    )}${!isRapidApi ? `&key=${process.env.APP_WEATHER_API_KEY}` : ''}`,
     method: 'GET',
     headers: {
       ...(isRapidApi
