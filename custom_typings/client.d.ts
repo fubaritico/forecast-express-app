@@ -71,13 +71,27 @@ declare global {
     pod?: string
   }
 
-  type MappedHourlyForecast = {
+  /** List of temperature forecast every next hours (7) - Default (C) */
+  type TemperatureForecast = {
     /** Temperature - Default (C) */
     temp?: number
     /** Timestamp in local time */
     timestamp_local?: string
+  }
+
+  /** List of chances of rain forecast every 3 hours (7) - Default (C) */
+  type RainChancesForecast = {
+    /** Temperature - Default (C) */
+    temp?: number
     /** Cloud cover as a percentage (%) */
     clouds?: number
+  }
+
+  type MappedHourlyForecast = {
+    /** List of temperature forecast every next hours (7) - Default (C) */
+    temperatures: TemperatureForecast[]
+    /** List of chances of rain forecast every 3 hours (7) - Default (C) */
+    chancesOfRain: RainChancesForecast[]
   }
 
   type MappedForecastDay = MappedForecast & {

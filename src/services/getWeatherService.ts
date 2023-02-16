@@ -6,7 +6,7 @@ import {
 } from '@Configs/requests'
 
 /** Arbitrary selected locations */
-const defaultCoordsList: Coordinates[] = [
+const defaultCoordsList: QueryParameters[] = [
   { lat: '35.5', lon: '78.5' }, // Some Place
   { lat: '50.63022092883518', lon: '3.0597929062754594' }, // Lille
   { lat: '40.51836', lon: '-3.825185' }, // Madrid
@@ -58,7 +58,7 @@ export const getDefaultObservationsService = async () => {
   return Promise.all<Promise<WeatherbitAPI.Observations>[]>(
     defaultCoordsList.map((coords) =>
       getWeatherService<WeatherbitAPI.Observations>(
-        getApiRequestConfig(coords, '/current')
+        getApiRequestConfig(coords) // defaults to '/current' path
       )
     )
   )
@@ -86,7 +86,7 @@ export const getHourlyForecastsService = async (
 ) => {
   return getWeatherService<WeatherbitAPI.ForecastHourly>(
     getApiHourlyForecastsRequestConfig(
-      { ...parameters, hours: 6 },
+      { ...parameters, hours: 24 },
       '/forecast/hourly'
     )
   )

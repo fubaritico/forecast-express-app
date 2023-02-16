@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { RequestOptions } from 'https'
 import { ParamsDictionary } from 'express-serve-static-core'
 
 export {}
@@ -97,7 +98,7 @@ declare global {
     [Key: string]: string | number | boolean | object | ObjectToStringQuery
   }
 
-  type ApiConfig = {
+  type ApiConfig = RequestOptions & {
     /** Host name */
     hostname: string
     /** Path to the API request with query string parameters */
@@ -105,9 +106,7 @@ declare global {
     /** Method defaults to GET */
     method: string
     /** Any headers */
-    headers: {
-      [key: string]: string
-    }
+    headers: Record<string, unknown>
   }
 
   namespace WeatherbitAPI {

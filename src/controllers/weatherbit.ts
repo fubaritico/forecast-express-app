@@ -6,7 +6,7 @@ import {
 } from '@Services/getWeatherService'
 import { currentDefaultObservationsMapper } from '../mappers/currentDefaultObservationsMapper'
 import { forecastDayMapper } from '../mappers/weeklyForecastsMapper'
-import { hourlyForecastsMapper } from '../mappers/hourlyForecastsMapper'
+import { hourlyDetailedForecastsMapper } from '../mappers/hourlyDetailedForecastsMapper'
 
 export const weatherController = (req: Request, res: Response) => {
   console.log('weatherController - req.query: ', req.query)
@@ -82,8 +82,7 @@ export const getHourlyForecastsController = async (
 }
 
 export const mapDetailedForecastsController = (req: Request, res: Response) => {
-  res.locals.mappedWeeklyForecasts.hourlyForecasts = hourlyForecastsMapper(
-    res.locals.hourlyForecasts.data
-  )
+  res.locals.mappedWeeklyForecasts.hourlyForecasts =
+    hourlyDetailedForecastsMapper(res.locals.hourlyForecasts.data)
   res.status(200).send(res.locals.mappedWeeklyForecasts)
 }
