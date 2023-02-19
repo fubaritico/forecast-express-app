@@ -18,11 +18,11 @@ export const hourlyDetailedForecastsMapper = (
     })
     .filter((_, i) => i < 7),
   chancesOfRain: forecastHours
-    .map((forecastHour): RelativeHumidityForecast => {
+    .map((forecastHour): ChancesOfRainForecast => {
       return {
-        relativeHumidity: {
-          value: forecastHour.rh,
-          display: applyPercentage(forecastHour.rh),
+        chancesOfRain: {
+          value: forecastHour.pop,
+          display: applyPercentage(forecastHour.pop),
         },
         timestampLocal: timestampLocalToProps(forecastHour.timestamp_local),
       }

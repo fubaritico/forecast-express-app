@@ -20,7 +20,7 @@ const defaultCoordsList: QueryParameters[] = [
 /**
  * Will request any API route with latitude and longitude by default
  *
- * @returns {Promise<WeatherbitAPI.Observations>}
+ * @returns {Promise<WeatherbitAPI.CurrentObsGroup>}
  */
 export const getWeatherService = <T>(apiConfig: ApiConfig): Promise<T> => {
   return new Promise((resolve, reject) => {
@@ -55,10 +55,10 @@ export const getWeatherService = <T>(apiConfig: ApiConfig): Promise<T> => {
  * Will return selected weather observations
  */
 export const getDefaultObservationsService = async () => {
-  return Promise.all<Promise<WeatherbitAPI.Observations>[]>(
+  return Promise.all<Promise<WeatherbitAPI.CurrentObsGroup>[]>(
     defaultCoordsList.map((coords) =>
-      getWeatherService<WeatherbitAPI.Observations>(
-        getApiRequestConfig(coords) // defaults to '/current' path
+      getWeatherService<WeatherbitAPI.CurrentObsGroup>(
+        getApiRequestConfig(coords, '/current', '/v2.0') // defaults to '/current' path
       )
     )
   )

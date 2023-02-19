@@ -131,7 +131,7 @@ declare global {
     //       "lon": 2.1988,
 
     /** List of current weather results */
-    interface Observation extends Coordinates {
+    interface CurrentObs extends Coordinates {
       /**  Apparent/"Feels Like" temperature (default Celsius) */
       app_temp: number
       /** Air Quality Index [US - EPA standard 0 - +500] */
@@ -191,7 +191,7 @@ declare global {
       sunrise: string
       /** Sunset time (HH:MM) */
       sunset: string
-      /** Temperature?: default Celsius) */
+      /** Temperature (default Celsius) */
       temp: number
       /** Local IANA Timezone */
       timezone: string
@@ -213,11 +213,11 @@ declare global {
       wind_spd: number
     }
 
-    interface Observations {
+    interface CurrentObsGroup {
       /** Count of returned observations */
       count: number
       /** List of current weather results */
-      data: Observation[]
+      data: CurrentObs[]
     }
 
     interface Forecast {

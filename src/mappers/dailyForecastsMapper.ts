@@ -1,4 +1,8 @@
-import { dateToProps, toKmPerHour } from '@Utils/convert'
+import {
+  dateToProps,
+  getFormattedDateFromTimezone,
+  toKmPerHour,
+} from '@Utils/convert'
 import {
   applyCelsiusDegreesLong,
   applyCelsiusDegreesShort,
@@ -43,7 +47,6 @@ export const forecastDayMapper = (
   const currentForecastDay: Forecast = forecastDay.data[0]
 
   mappedForecastDay.cityName = forecastDay.city_name
-  mappedForecastDay.partOfTheDay = currentForecastDay.pod
   mappedForecastDay.weatherDescription = currentForecastDay.weather.description
   mappedForecastDay.weatherIcon = currentForecastDay.weather.icon
   mappedForecastDay.timestampLocal = dateToProps(
@@ -68,6 +71,14 @@ export const forecastDayMapper = (
     currentForecastDay.temp
   )
   mappedForecastDay.dailyForecasts = dailyForecastsMapper(forecastDay.data)
+  mappedForecastDay.sunrise = getFormattedDateFromTimezone(
+    currentForecastDay.sunrise_ts,
+    forecastDay.timezone
+  )
+  mappedForecastDay.sunset = getFormattedDateFromTimezone(
+    currentForecastDay.sunset_ts,
+    forecastDay.timezone
+  )
 
   return mappedForecastDay
 }

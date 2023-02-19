@@ -5,25 +5,23 @@ export const getApiRequestConfig = (
   path = '/current',
   prefix?: string,
   isRapidApi = false
-): ApiConfig => {
-  return {
-    hostname: isRapidApi
-      ? process.env.APP_RAPID_API_WEATHER_API_HOST
-      : process.env.APP_WEATHER_API_HOST,
-    path: `${prefix && !isRapidApi ? prefix : ''}${path}${toQueryString(
-      parameters
-    )}${!isRapidApi ? `&key=${process.env.APP_WEATHER_API_KEY}` : ''}`,
-    method: 'GET',
-    headers: {
-      ...(isRapidApi
-        ? {
-            'X-RapidAPI-Key': process.env.APP_RAPID_API_WEATHER_API_KEY,
-            'X-RapidAPI-Host': process.env.APP_RAPID_API_WEATHER_API_HOST,
-          }
-        : undefined),
-    },
-  }
-}
+): ApiConfig => ({
+  hostname: isRapidApi
+    ? process.env.APP_RAPID_API_WEATHER_API_HOST
+    : process.env.APP_WEATHER_API_HOST,
+  path: `${prefix && !isRapidApi ? prefix : ''}${path}${toQueryString(
+    parameters
+  )}${!isRapidApi ? `&key=${process.env.APP_WEATHER_API_KEY}` : ''}`,
+  method: 'GET',
+  headers: {
+    ...(isRapidApi
+      ? {
+          'X-RapidAPI-Key': process.env.APP_RAPID_API_WEATHER_API_KEY,
+          'X-RapidAPI-Host': process.env.APP_RAPID_API_WEATHER_API_HOST,
+        }
+      : undefined),
+  },
+})
 
 export const getApiDailyForecastsRequestConfig = (
   parameters: QueryParameters,

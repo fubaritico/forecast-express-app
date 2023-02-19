@@ -3,6 +3,6 @@ declare namespace Express {
     paramName?: string
     secondParam?: string
 
-    test: WeatherbitAPI.Observations[]
+    test: WeatherbitAPI.CurrentObsGroup[]
   }
 }

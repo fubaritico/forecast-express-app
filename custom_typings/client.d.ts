@@ -9,6 +9,14 @@ declare global {
     lon: string
   }
 
+  /** time (HH:MM am) */
+  type TimeProps = {
+    /** Untouched date */
+    date?: string
+    /** Formatted date like <i>1:20am</i> */
+    formatted?: string
+  }
+
   /** Current weather of a place */
   type MappedObservation = Partial<{
     /**
@@ -19,7 +27,7 @@ declare global {
      * */
     city_name: string
     /**  Apparent/"Feels Like" temperature default (°C) */
-    app_temp: number
+    app_temp: string
     /** Latitude & longitude (Degrees) */
     coordinates: Coordinates
     /** Text weather description */
@@ -36,10 +44,12 @@ declare global {
      * @see: https://www.weatherbit.io/api/codes
      * */
     icon: string
-    /** Sunrise time (HH:MM) */
-    sunrise: string
-    /** Sunset time (HH:MM) */
-    sunset: string
+    /** Sunrise time (HH:MM am) */
+    sunrise: TimeProps
+    /** Sunset time (HH:MM am) */
+    sunset: TimeProps
+    /** Part of the day (d = day, n = night) */
+    partOfTheDay?: string
   }>
 
   /** List of current observations */
@@ -59,6 +69,39 @@ declare global {
     value: string
     /** Formatted value like <i>9°C or 9°</i> */
     display: string
+  }
+
+  /** List of temperature forecast every next hours (7) - Default (°C) */
+  type TemperatureForecast = {
+    /** Temperature - Default (°C) */
+    temperature?: {
+      /** Untouched value */
+      value: number
+      /** Formatted value like 9°C or 9° */
+      display: string
+    }
+    /** Timestamp in local time */
+    timestampLocal?: LocalTimeStampProps
+  }
+
+  /** List of chances of rain forecast every 3 hours (7) - Default (°C) */
+  type ChancesOfRainForecast = {
+    /** Cloud cover as a percentage (%) */
+    chancesOfRain?: {
+      /** Untouched value */
+      value: number
+      /** Formatted value like 10% */
+      display: string
+    }
+    /** Timestamp in local time */
+    timestampLocal?: LocalTimeStampProps
+  }
+
+  type MappedHourlyForecast = {
+    /** List of temperature forecast every next hours (7) - Default (°C) */
+    temperatures: TemperatureForecast[]
+    /** List of chances of rain forecast every 3 hours (7) - Default (°C) */
+    chancesOfRain: ChancesOfRainForecast[]
   }
 
   /** Forecast information displayed in detailed view for each incomming day */
@@ -89,41 +132,6 @@ declare global {
      * @see: https://www.weatherbit.io/api/codes
      * */
     weatherCode?: string
-    /** Part of the day (d = day, n = night) */
-    partOfTheDay?: string
-  }
-
-  /** List of temperature forecast every next hours (7) - Default (°C) */
-  type TemperatureForecast = {
-    /** Temperature - Default (°C) */
-    temperature?: {
-      /** Untouched value */
-      value: number
-      /** Formatted value like 9°C or 9° */
-      display: string
-    }
-    /** Timestamp in local time */
-    timestampLocal?: LocalTimeStampProps
-  }
-
-  /** List of chances of rain forecast every 3 hours (7) - Default (°C) */
-  type RelativeHumidityForecast = {
-    /** Cloud cover as a percentage (%) */
-    relativeHumidity?: {
-      /** Untouched value */
-      value: number
-      /** Formatted value like 10% */
-      display: string
-    }
-    /** Timestamp in local time */
-    timestampLocal?: LocalTimeStampProps
-  }
-
-  type MappedHourlyForecast = {
-    /** List of temperature forecast every next hours (7) - Default (°C) */
-    temperatures: TemperatureForecast[]
-    /** List of chances of rain forecast every 3 hours (7) - Default (°C) */
-    chancesOfRain: RelativeHumidityForecast[]
   }
 
   type MappedForecastDay = MappedForecast & {
@@ -141,6 +149,12 @@ declare global {
     visibility?: string
     /** Dewpoint (Average) - default (°C) */
     dewPoint?: string
+    /** Sunrise time from unix timestamp,<br>
+     * formatted like <i>ddd Do MMM YYYY, hh:mm:ss a</i> */
+    sunrise?: string
+    /** Sunset time from unix timestamp,<br>
+     * formatted like <i>ddd Do MMM YYYY, hh:mm:ss a</i> */
+    sunset?: string
     /** Weekly weather Forecasts */
     dailyForecasts?: MappedForecast[]
     /** Hourly detailed forecasts */
