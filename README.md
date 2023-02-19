@@ -23,3 +23,9 @@ Simple Express index server based on this repository: <br>
 - [https://github.com/w3tecch/express-typescript-boilerplate](https://github.com/w3tecch/express-typescript-boilerplate)
 - Error Handling [https://expressjs.com/en/guide/error-handling.html](https://expressjs.com/en/guide/error-handling.html)
 - More error handling [https://dev.to/qbentil/how-to-write-custom-error-handler-middleware-in-expressjs-using-javascript-29j1](https://dev.to/qbentil/how-to-write-custom-error-handler-middleware-in-expressjs-using-javascript-29j1)
+
+### Jest
+To make it work, I had to install jest, ts-jest, types for jest, babel presets and create babel.config files.
+
+#### some links on this topic (for further config for jest integration links)
+- [https://plainenglish.io/blog/beginners-guide-to-testing-jest-with-node-typescript#jest](https://plainenglish.io/blog/beginners-guide-to-testing-jest-with-node-typescript#jest)

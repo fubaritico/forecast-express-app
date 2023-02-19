@@ -10,7 +10,6 @@ export const timestampInMs = (ts: number): number => {
   return ts * 1000
 }
 
-// TODO test with "Asia/Tokyo", 1676755362
 export const getFormattedDateFromTimezone = (
   ts: number,
   timezone: string
