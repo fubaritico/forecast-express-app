@@ -43,7 +43,9 @@ export const dailyForecastsMapper = (
 export const forecastDayMapper = (
   forecastDay: ForecastDay
 ): MappedForecastDay => {
-  const mappedForecastDay: MappedForecastDay = {}
+  const mappedForecastDay: MappedForecastDay = {
+    dailyForecasts: [],
+  }
   const currentForecastDay: Forecast = forecastDay.data[0]
 
   mappedForecastDay.cityName = forecastDay.city_name

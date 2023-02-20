@@ -10,68 +10,64 @@ export const timestampInMs = (ts: number): number => {
   return ts * 1000
 }
 
+/**
+ * Will convert a UTC date without into a local date string.
+ *
+ * @param {number} ts - unix UTC timestamp in seconds
+ * @param {string} timezone - a time zone in Local IANA Timezone format
+ * @param {string} mask - a format mask applied to the result after subtracting offset, defaults to 'ddd Do MMM YYYY, hh:mm:ss a'
+ *
+ * @returns The date converted in local time in format 'ddd Do MMM YYYY, hh:mm:ss a' by default
+ */
 export const getFormattedDateFromTimezone = (
   ts: number,
-  timezone: string
+  timezone: string,
+  mask = 'ddd Do MMM YYYY, hh:mm:ss a'
 ): string => {
   // Getting UTC offset from timezone name & utc timestamp
   const timestamp = timestampInMs(ts)
   const zone = momentTz.tz.zone(timezone)
-  // const hoursOffset = (zone.parse(timestamp) / 60) * -1 // Gets 9 (hours)
+  // const hoursOffset = (zone.parse(timestamp) / 60) * -1; // Gets 9 (hours)
 
   // With utcOffset
   const minutesOffset = zone.utcOffset(timestamp) // Gets -540 (minutes)
 
-  // Getting place actual (local) time from utc
-  const momentFromTimestamp = moment(timestamp).clone().utc()
-  const actualTime = momentFromTimestamp
+  // Getting tokio actual (local) time from utc
+  const momentUtcTimeFromTimestamp = moment(timestamp).clone().utc()
+  const localTime = momentUtcTimeFromTimestamp
     .clone()
     .subtract(minutesOffset, 'minutes')
 
-  // console.log('-------------------------------')
-  // console.log('hoursOffset:         ', hoursOffset)
-  // console.log('minutesOffset:       ', minutesOffset)
-  // console.log('momentFromTimestamp: ', momentFromTimestamp)
-  // console.log('actualTime:     ', actualTime)
-
-  return actualTime.format('ddd Do MMM YYYY, hh:mm:ss a')
+  return localTime.format(mask)
 }
 
-export const getUtcOffsetFromLocalTime = () => {
-  // Moment instance where we get the offset from
-  // moment.parseZone() parses the string but keeps the resulting Moment object
-  // in a fixed-offset timezone with the provided offset in the string.
-  // Get current time in local time
-  const defaultLocalTime = moment().format()
-  const momentFromZone = moment.parseZone(defaultLocalTime).clone()
-  const timestampFromZone = Number(momentFromZone.format('x'))
-  const utcOffsetFromZone = momentFromZone.utcOffset()
-  console.log('-------------------------------')
-  console.log('momentFromZone: ', momentFromZone)
-  console.log('timestampFromZone: ', timestampFromZone)
-  console.log('utcOffsetFromZone: ', utcOffsetFromZone)
+/**
+ * Will convert a UTC time without a provided day into a local time string.
+ *
+ * @param {string} time - time as a string in format '15:45'
+ * @param {string} timezone - a time zone in Local IANA Timezone format
+ *
+ * @returns The time converted in local time in format '3:45pm' with the according offset
+ */
+const getFormattedTimeFromTimezone = (time: string, timezone: string) => {
+  const nowInUtcMode = moment().clone().utc()
 
-  // Get current time in UTC time by switching in UTC mode
-  const utcTime = moment().clone().utc().format()
-
-  // Moment instance we get the local offset from (Gets 0 while it should be 60)
-  const utcOffset = moment().utcOffset()
-  console.log('-------------------------------')
-  console.log('defaultLocalTime: ', defaultLocalTime)
-  console.log('utcTime: ', utcTime)
-  console.log('utcOffset: ', utcOffset)
-}
-
-export const timeToProps = (time: string): TimeProps => {
   const parsedTime = time.split(':')
-  const hour = parseInt(parsedTime[0])
+  const hours = parseInt(parsedTime[0])
   const minutes = parseInt(parsedTime[1])
 
+  nowInUtcMode.set('hours', hours)
+  nowInUtcMode.set('minutes', minutes)
+
+  const utcTimestamp = Number(nowInUtcMode.format('X'))
+
+  return getFormattedDateFromTimezone(utcTimestamp, timezone, 'h:mma')
+}
+
+export const timeToProps = (time: string, timezone: string): TimeProps => {
   return {
     date: time,
-    formatted: `${hour >= 13 ? hour - 12 : hour}:${
-      minutes.toString().length === 2 ? minutes : '0' + minutes
-    }${hour >= 12 ? 'pm' : 'am'}`,
+    formatted: getFormattedTimeFromTimezone(time, timezone),
   }
 }
 

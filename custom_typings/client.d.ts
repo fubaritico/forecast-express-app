@@ -25,13 +25,13 @@ declare global {
      * &city=Raleigh,NC
      * &city=Raleigh,North+Carolina
      * */
-    city_name: string
+    cityName: string
     /**  Apparent/"Feels Like" temperature default (°C) */
-    app_temp: string
+    temperature: string
     /** Latitude & longitude (Degrees) */
     coordinates: Coordinates
     /** Text weather description */
-    description: string
+    weatherDescription: string
     /**
      * Weather code
      * ex: 200 for 'Thunderstorm with light rain'
@@ -43,7 +43,7 @@ declare global {
      * ex: 't01d', 't02d', etc
      * @see: https://www.weatherbit.io/api/codes
      * */
-    icon: string
+    weatherIcon: string
     /** Sunrise time (HH:MM am) */
     sunrise: TimeProps
     /** Sunset time (HH:MM am) */
@@ -156,8 +156,11 @@ declare global {
      * formatted like <i>ddd Do MMM YYYY, hh:mm:ss a</i> */
     sunset?: string
     /** Weekly weather Forecasts */
-    dailyForecasts?: MappedForecast[]
+    dailyForecasts: MappedForecast[] | Record<string, unknown>
     /** Hourly detailed forecasts */
-    hourlyForecasts?: MappedHourlyForecast[]
+    hourlyForecasts?: MappedHourlyForecast[] | Record<string, unknown>
   }
+
+  /** Detailed data, forecasts for a given observation */
+  type GetDetailedForecatsResponse = MappedForecastDay
 }

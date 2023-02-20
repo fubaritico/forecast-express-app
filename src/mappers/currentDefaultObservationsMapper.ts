@@ -9,17 +9,23 @@ const currentObservationMapper = (
 ): MappedObservation => {
   const mappedObservation: MappedObservation = {}
 
-  mappedObservation.description = currentObservation.weather.description
-  mappedObservation.icon = currentObservation.weather.icon
-  mappedObservation.city_name = currentObservation.city_name
-  mappedObservation.sunrise = timeToProps(currentObservation.sunrise)
-  mappedObservation.sunset = timeToProps(currentObservation.sunset)
-  mappedObservation.app_temp = applyCelsiusDegreesShort(
+  mappedObservation.cityName = currentObservation.city_name
+  mappedObservation.weatherDescription = currentObservation.weather.description
+  mappedObservation.weatherIcon = currentObservation.weather.icon
+  mappedObservation.sunrise = timeToProps(
+    currentObservation.sunrise,
+    currentObservation.timezone
+  )
+  mappedObservation.sunset = timeToProps(
+    currentObservation.sunset,
+    currentObservation.timezone
+  )
+  mappedObservation.temperature = applyCelsiusDegreesShort(
     currentObservation.app_temp
   )
   mappedObservation.coordinates = {
-    lat: currentObservation.lat,
-    lon: currentObservation.lon,
+    lat: currentObservation.lat.toString(),
+    lon: currentObservation.lon.toString(),
   }
 
   return mappedObservation
