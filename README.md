@@ -29,3 +29,6 @@ To make it work, I had to install jest, ts-jest, types for jest, babel presets a
 
 #### some links on this topic (for further config for jest integration links)
 - [https://plainenglish.io/blog/beginners-guide-to-testing-jest-with-node-typescript#jest](https://plainenglish.io/blog/beginners-guide-to-testing-jest-with-node-typescript#jest)
+
+### Units issue
+- Online converters all in one site [https://www.metric-conversions.org/converter.htm](https://www.metric-conversions.org/converter.htm)

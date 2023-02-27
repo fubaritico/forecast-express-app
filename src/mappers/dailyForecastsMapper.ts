@@ -1,14 +1,9 @@
+import { dateToWeekDay, round, toKmPerHour } from '@Utils/convert'
 import {
-  dateToProps,
-  getFormattedDateFromTimezone,
-  toKmPerHour,
-} from '@Utils/convert'
-import {
-  applyCelsiusDegreesLong,
-  applyCelsiusDegreesShort,
+  applyDegreesShort,
   applyKilometers,
   applyKmPerHour,
-  applyMillibars,
+  applyPressureUnits,
   applyPercentage,
 } from '@Utils/units'
 
@@ -22,15 +17,15 @@ export const dailyForecastsMapper = (
     (forecast: Forecast): MappedForecast => {
       const mappedForecast: MappedForecast = {}
 
-      mappedForecast.apparentMaximumTemperature = applyCelsiusDegreesShort(
-        forecast.app_max_temp
+      mappedForecast.apparentMaximumTemperature = applyDegreesShort(
+        round(forecast.app_max_temp)
       )
-      mappedForecast.apparentMinimumTemperature = applyCelsiusDegreesShort(
-        forecast.app_min_temp
+      mappedForecast.apparentMinimumTemperature = applyDegreesShort(
+        round(forecast.app_min_temp)
       )
-      mappedForecast.timestampLocal = dateToProps(forecast.timestamp_local)
+      mappedForecast.timestampLocal = dateToWeekDay(forecast.ts)
       mappedForecast.weatherIcon = forecast.weather.icon
-      mappedForecast.relativeHumidity = applyPercentage(forecast.rh)
+      mappedForecast.chancesOfRain = applyPercentage(forecast.pop)
 
       return mappedForecast
     }
@@ -41,46 +36,44 @@ export const dailyForecastsMapper = (
   return mappedForecast
 }
 export const forecastDayMapper = (
-  forecastDay: ForecastDay
+  forecastDay: ForecastDay,
+  mappedCurrentObservation: MappedObservation
 ): MappedForecastDay => {
   const mappedForecastDay: MappedForecastDay = {
+    currentObservation: mappedCurrentObservation,
     dailyForecasts: [],
+    hourlyForecasts: {
+      temperatures: [],
+      chancesOfRain: [],
+    },
   }
   const currentForecastDay: Forecast = forecastDay.data[0]
 
-  mappedForecastDay.cityName = forecastDay.city_name
-  mappedForecastDay.weatherDescription = currentForecastDay.weather.description
-  mappedForecastDay.weatherIcon = currentForecastDay.weather.icon
-  mappedForecastDay.timestampLocal = dateToProps(
-    currentForecastDay.timestamp_local
-  )
-  mappedForecastDay.apparentMaximumTemperature = applyCelsiusDegreesLong(
-    currentForecastDay.app_max_temp
-  )
-  mappedForecastDay.apparentMinimumTemperature = applyCelsiusDegreesLong(
-    currentForecastDay.app_min_temp
-  )
-  mappedForecastDay.windSpeed = applyKmPerHour(
+  console.log('forecast.timestamp_local: ', currentForecastDay.timestamp_local)
+
+  mappedForecastDay.currentObservation.apparentMaximumTemperature =
+    applyDegreesShort(round(currentForecastDay.app_max_temp))
+  mappedForecastDay.currentObservation.apparentMinimumTemperature =
+    applyDegreesShort(round(currentForecastDay.app_min_temp))
+  mappedForecastDay.currentObservation.windSpeed = applyKmPerHour(
     toKmPerHour(currentForecastDay.wind_spd)
   )
-  mappedForecastDay.dewPoint = applyCelsiusDegreesShort(
-    currentForecastDay.dewpt
+  mappedForecastDay.currentObservation.dewPoint = applyDegreesShort(
+    round(currentForecastDay.dewpt)
   )
-  mappedForecastDay.relativeHumidity = applyPercentage(currentForecastDay.rh)
-  mappedForecastDay.pressure = applyMillibars(currentForecastDay.pres)
-  mappedForecastDay.visibility = applyKilometers(currentForecastDay.vis)
-  mappedForecastDay.averageTemperature = applyCelsiusDegreesShort(
-    currentForecastDay.temp
+  mappedForecastDay.currentObservation.relativeHumidity = applyPercentage(
+    currentForecastDay.rh
+  )
+  mappedForecastDay.currentObservation.pressure = applyPressureUnits(
+    currentForecastDay.pres
+  )
+  mappedForecastDay.currentObservation.visibility = applyKilometers(
+    currentForecastDay.vis
+  )
+  mappedForecastDay.currentObservation.feelsLike = applyDegreesShort(
+    round(currentForecastDay.temp)
   )
   mappedForecastDay.dailyForecasts = dailyForecastsMapper(forecastDay.data)
-  mappedForecastDay.sunrise = getFormattedDateFromTimezone(
-    currentForecastDay.sunrise_ts,
-    forecastDay.timezone
-  )
-  mappedForecastDay.sunset = getFormattedDateFromTimezone(
-    currentForecastDay.sunset_ts,
-    forecastDay.timezone
-  )
 
   return mappedForecastDay
 }

@@ -50,6 +50,8 @@ declare global {
     sunset: TimeProps
     /** Part of the day (d = day, n = night) */
     partOfTheDay?: string
+    /** Timestamp in local time */
+    dateLocal?: DateProps
   }>
 
   /** List of current observations */
@@ -57,7 +59,7 @@ declare global {
 
   type DateProps = {
     /** Untouched date */
-    date?: string
+    timestamp?: number
     /** Week day like <i>Thu, Wed, etc</i> */
     weekDay?: string
     /** Formatted date like <i>Mon, 1:20am</i> */
@@ -71,37 +73,26 @@ declare global {
     display: string
   }
 
-  /** List of temperature forecast every next hours (7) - Default (°C) */
-  type TemperatureForecast = {
-    /** Temperature - Default (°C) */
-    temperature?: {
-      /** Untouched value */
-      value: number
-      /** Formatted value like 9°C or 9° */
-      display: string
-    }
-    /** Timestamp in local time */
-    timestampLocal?: LocalTimeStampProps
+  type ChartValue = {
+    /** Untouched value */
+    value: number
+    /** Formatted value with unit */
+    display: string
   }
 
-  /** List of chances of rain forecast every 3 hours (7) - Default (°C) */
-  type ChancesOfRainForecast = {
+  /** Chart data with time and value */
+  type ChartData = {
     /** Cloud cover as a percentage (%) */
-    chancesOfRain?: {
-      /** Untouched value */
-      value: number
-      /** Formatted value like 10% */
-      display: string
-    }
+    chartValue: ChartValue
     /** Timestamp in local time */
-    timestampLocal?: LocalTimeStampProps
+    timestampLocal: LocalTimeStampProps
   }
 
   type MappedHourlyForecast = {
     /** List of temperature forecast every next hours (7) - Default (°C) */
-    temperatures: TemperatureForecast[]
-    /** List of chances of rain forecast every 3 hours (7) - Default (°C) */
-    chancesOfRain: ChancesOfRainForecast[]
+    temperatures: ChartData[]
+    /** List of chances of rain forecast every 3 hours (7) - Default (%) */
+    chancesOfRain: ChartData[]
   }
 
   /** Forecast information displayed in detailed view for each incomming day */
@@ -118,47 +109,40 @@ declare global {
     apparentMaximumTemperature?: string
     /** Apparent Minimum daily Temperature - default (°C) */
     apparentMinimumTemperature?: string
-    /** Relative Humidity as a percentage (%) */
-    relativeHumidity?: string
+    /** chances of rain as a percentage (%) */
+    chancesOfRain?: string
     /**
      * Icon code for forecast image display
      * Weather icon code: 't01d', 't02d', etc
      * @see: https://www.weatherbit.io/api/codes
      * */
     weatherIcon?: string
-    /**
-     * Weather Condition code
-     * ex: 200 for 'Thunderstorm with light rain'
-     * @see: https://www.weatherbit.io/api/codes
-     * */
-    weatherCode?: string
   }
 
-  type MappedForecastDay = MappedForecast & {
-    /** City Name */
-    cityName?: string
-    /** Weather Condition description */
-    weatherDescription?: string
-    /** Temperature (Average) - default (°C) Feels like */
-    averageTemperature?: string
-    /** Wind Speed (default km/h) */
-    windSpeed?: string
-    /** Pressure (mb) */
-    pressure?: string
-    /** Average Visibility default (KM) */
-    visibility?: string
-    /** Dewpoint (Average) - default (°C) */
-    dewPoint?: string
-    /** Sunrise time from unix timestamp,<br>
-     * formatted like <i>ddd Do MMM YYYY, hh:mm:ss a</i> */
-    sunrise?: string
-    /** Sunset time from unix timestamp,<br>
-     * formatted like <i>ddd Do MMM YYYY, hh:mm:ss a</i> */
-    sunset?: string
+  /** Detailed Forecast data for one given day */
+  type MappedForecastDay = {
+    currentObservation: MappedObservation & {
+      /** Apparent Maximum daily Temperature - default (°C) */
+      apparentMaximumTemperature?: string
+      /** Apparent Minimum daily Temperature - default (°C) */
+      apparentMinimumTemperature?: string
+      /** Relative Humidity as a percentage (%) */
+      relativeHumidity?: string
+      /** Temperature (Average) - default (°C) Feels like */
+      feelsLike?: string
+      /** Wind Speed (default km/h) */
+      windSpeed?: string
+      /** Pressure (mb) */
+      pressure?: string
+      /** Average Visibility default (KM) */
+      visibility?: string
+      /** Dewpoint (Average) - default (°C) */
+      dewPoint?: string
+    }
     /** Weekly weather Forecasts */
-    dailyForecasts: MappedForecast[] | Record<string, unknown>
+    dailyForecasts: MappedForecast[]
     /** Hourly detailed forecasts */
-    hourlyForecasts?: MappedHourlyForecast[] | Record<string, unknown>
+    hourlyForecasts: MappedHourlyForecast
   }
 
   /** Detailed data, forecasts for a given observation */

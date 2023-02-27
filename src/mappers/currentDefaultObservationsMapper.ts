@@ -1,10 +1,10 @@
-import { applyCelsiusDegreesShort } from '@Utils/units'
-import { timeToProps } from '@Utils/convert'
+import { applyDegreesShort } from '@Utils/units'
+import { dateToWeekDay, round, timeToProps } from '@Utils/convert'
 
 type Observations = WeatherbitAPI.CurrentObsGroup
 type Observation = WeatherbitAPI.CurrentObs
 
-const currentObservationMapper = (
+export const currentObservationMapper = (
   currentObservation: Observation
 ): MappedObservation => {
   const mappedObservation: MappedObservation = {}
@@ -20,24 +20,18 @@ const currentObservationMapper = (
     currentObservation.sunset,
     currentObservation.timezone
   )
-  mappedObservation.temperature = applyCelsiusDegreesShort(
-    currentObservation.app_temp
+  mappedObservation.temperature = applyDegreesShort(
+    round(currentObservation.app_temp)
   )
-  mappedObservation.coordinates = {
-    lat: currentObservation.lat.toString(),
-    lon: currentObservation.lon.toString(),
-  }
+  mappedObservation.dateLocal = dateToWeekDay(currentObservation.ts)
 
+  console.log(mappedObservation)
   return mappedObservation
 }
 
 export const currentDefaultObservationsMapper = (
   observationResults: Observations[]
 ): MappedObservation[] => {
-  console.log(
-    'currentDefaultObservationsMapper - observationResults: ',
-    observationResults
-  )
   return observationResults
     .map((observationResult: Observations) =>
       observationResult.data.map((currentObservation: Observation) => {

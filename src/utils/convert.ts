@@ -3,6 +3,14 @@ import momentTz from 'moment-timezone'
 
 export const toKmPerHour = (value: number): number => value * (18 / 5)
 
+export const fromCelciusToFahrenheit = (value: number, metric = true): number =>
+  metric ? value : (value * 9) / 5 + 32
+
+export const fromMillibarsToInchesOfMercury = (
+  value: number,
+  metric = true
+): number => (metric ? value : value / 33.864)
+
 export const round = (value: number): number => Math.round(value)
 
 export const timestampInMs = (ts: number): number => {
@@ -71,11 +79,11 @@ export const timeToProps = (time: string, timezone: string): TimeProps => {
   }
 }
 
-export const dateToProps = (date: string): DateProps => {
-  const d = moment(date)
+export const dateToWeekDay = (timestamp: number): DateProps => {
+  const d = moment(timestampInMs(timestamp))
 
   return {
-    date,
+    timestamp,
     weekDay: d.format('ddd'),
     formatted: d.format('ddd, h:mm a'),
   }

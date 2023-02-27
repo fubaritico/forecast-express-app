@@ -65,6 +65,17 @@ export const getDefaultObservationsService = async () => {
 }
 
 /**
+ * Will return weather observation of a given location (lat & lon)
+ */
+export const getCurrentObservationService = async (
+  parameters: QueryParameters
+) => {
+  return getWeatherService<WeatherbitAPI.CurrentObsGroup>(
+    getApiRequestConfig({ ...parameters }, '/current', '/v2.0')
+  )
+}
+
+/**
  * Will return next 7 days forecasts for a given place defined by its latitude and longitude
  */
 export const getWeeklyForecastsService = async (
@@ -72,7 +83,7 @@ export const getWeeklyForecastsService = async (
 ) => {
   return getWeatherService<WeatherbitAPI.ForecastDay>(
     getApiDailyForecastsRequestConfig(
-      { ...parameters, days: 7 },
+      { ...parameters, days: 8 }, // the forecast includes the current day
       '/forecast/daily'
     )
   )
