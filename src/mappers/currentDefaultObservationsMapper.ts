@@ -1,5 +1,6 @@
 import { applyDegreesShort } from '@Utils/units'
 import { dateToWeekDay, round, timeToProps } from '@Utils/convert'
+import { generateID } from '@Utils/miscellanous'
 
 type Observations = WeatherbitAPI.CurrentObsGroup
 type Observation = WeatherbitAPI.CurrentObs
@@ -7,11 +8,19 @@ type Observation = WeatherbitAPI.CurrentObs
 export const currentObservationMapper = (
   currentObservation: Observation
 ): MappedObservation => {
-  const mappedObservation: MappedObservation = {}
+  const mappedObservation: MappedObservation = {
+    id: generateID().toString(),
+    lat: currentObservation.lat.toString(),
+    lon: currentObservation.lon.toString(),
+    cityName: currentObservation.city_name,
+    countryCode: currentObservation.country_code,
+    weatherIcon: currentObservation.weather.icon,
+    weatherDescription: currentObservation.weather.description,
+    weatherCode: currentObservation.weather.code.toString(),
+    temperature: applyDegreesShort(round(currentObservation.app_temp)),
+  }
 
-  mappedObservation.cityName = currentObservation.city_name
-  mappedObservation.weatherDescription = currentObservation.weather.description
-  mappedObservation.weatherIcon = currentObservation.weather.icon
+  // non mandatory data
   mappedObservation.sunrise = timeToProps(
     currentObservation.sunrise,
     currentObservation.timezone
@@ -20,12 +29,8 @@ export const currentObservationMapper = (
     currentObservation.sunset,
     currentObservation.timezone
   )
-  mappedObservation.temperature = applyDegreesShort(
-    round(currentObservation.app_temp)
-  )
   mappedObservation.dateLocal = dateToWeekDay(currentObservation.ts)
 
-  console.log(mappedObservation)
   return mappedObservation
 }
 

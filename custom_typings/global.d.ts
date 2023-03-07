@@ -79,7 +79,7 @@ declare global {
   }>
 
   /** Expected query string parameters, some parameters can be combined */
-  type QueryParameters = LocationParams & OtherParams
+  type QueryParameters = LocationParams & OtherParams & { cityName?: string }
 
   /**
    * Request with query property containing expected params

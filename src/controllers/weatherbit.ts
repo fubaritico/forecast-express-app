@@ -12,12 +12,6 @@ import {
 import { forecastDayMapper } from '../mappers/dailyForecastsMapper'
 import { hourlyDetailedForecastsMapper } from '../mappers/hourlyDetailedForecastsMapper'
 
-export const weatherController = (req: Request, res: Response) => {
-  console.log('weatherController - req.query: ', req.query)
-  console.log('weatherControllers - req: ', req.query)
-  return res.send(req.query)
-}
-
 export const getDefaultObservationsController = async (
   req: Request,
   res: Response,
@@ -49,7 +43,6 @@ export const getCurrentObservationController = async (
 ) => {
   try {
     res.locals.observation = await getCurrentObservationService(req.query)
-    console.log(res.locals.observation)
     next()
   } catch (err) {
     res.status(500).send(err)
@@ -78,7 +71,6 @@ export const getWeeklyForecastsController = async (
 ) => {
   try {
     res.locals.dailyForecasts = await getWeeklyForecastsService(req.query)
-    console.log(res.locals.dailyForecasts)
     next()
   } catch (err) {
     res.status(500).send(err)

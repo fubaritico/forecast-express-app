@@ -6,6 +6,7 @@ import {
   applyPressureUnits,
   applyPercentage,
 } from '@Utils/units'
+import { generateID } from '@Utils/miscellanous'
 
 type ForecastDay = WeatherbitAPI.ForecastDay
 type Forecast = WeatherbitAPI.Forecast
@@ -15,7 +16,9 @@ export const dailyForecastsMapper = (
 ): MappedForecast[] => {
   const mappedForecast: MappedForecast[] = forecasts.map(
     (forecast: Forecast): MappedForecast => {
-      const mappedForecast: MappedForecast = {}
+      const mappedForecast: MappedForecast = {
+        id: generateID().toString(),
+      }
 
       mappedForecast.apparentMaximumTemperature = applyDegreesShort(
         round(forecast.app_max_temp)
@@ -37,7 +40,7 @@ export const dailyForecastsMapper = (
 }
 export const forecastDayMapper = (
   forecastDay: ForecastDay,
-  mappedCurrentObservation: MappedObservation
+  mappedCurrentObservation: MappedObservation & DetailedObservationData
 ): MappedForecastDay => {
   const mappedForecastDay: MappedForecastDay = {
     currentObservation: mappedCurrentObservation,
@@ -48,8 +51,6 @@ export const forecastDayMapper = (
     },
   }
   const currentForecastDay: Forecast = forecastDay.data[0]
-
-  console.log('forecast.timestamp_local: ', currentForecastDay.timestamp_local)
 
   mappedForecastDay.currentObservation.apparentMaximumTemperature =
     applyDegreesShort(round(currentForecastDay.app_max_temp))

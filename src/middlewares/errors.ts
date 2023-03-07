@@ -11,8 +11,6 @@ export const getErrorMiddleWare = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('Error encountered:', err.message || err)
-
   next(err)
 }
 

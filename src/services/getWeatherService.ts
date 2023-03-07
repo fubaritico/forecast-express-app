@@ -4,17 +4,18 @@ import {
   getApiHourlyForecastsRequestConfig,
   getApiRequestConfig,
 } from '@Configs/requests'
+import { setCoordinates } from '@Utils/geocoder'
 
 /** Arbitrary selected locations */
 const defaultCoordsList: QueryParameters[] = [
-  { lat: '35.5', lon: '78.5' }, // Some Place
-  { lat: '50.63022092883518', lon: '3.0597929062754594' }, // Lille
-  { lat: '40.51836', lon: '-3.825185' }, // Madrid
-  { lat: '41.912541', lon: '12.508524' }, // Rome
-  { lat: '51.506646', lon: '-0.103871' }, // London
-  { lat: '40.724997', lon: '-73.990566' }, // New York
-  { lat: '35.689249', lon: '139.76238' }, // Tokyo
-  { lat: '-34.628235', lon: '-58.447033' }, // Buenos Aires
+  { lat: '35.5', lon: '78.5', cityName: '' }, // Some Place
+  { lat: '50.63022092883518', lon: '3.0597929062754594', cityName: '' }, // Lille
+  { lat: '40.51836', lon: '-3.825185', cityName: '' }, // Madrid
+  { lat: '41.912541', lon: '12.508524', cityName: '' }, // Rome
+  { lat: '51.506646', lon: '-0.103871', cityName: '' }, // London
+  { lat: '40.724997', lon: '-73.990566', cityName: '' }, // New York
+  { lat: '35.689249', lon: '139.76238', cityName: '' }, // Tokyo
+  { lat: '-34.628235', lon: '-58.447033', cityName: '' }, // Buenos Aires
 ]
 
 /**
@@ -70,8 +71,15 @@ export const getDefaultObservationsService = async () => {
 export const getCurrentObservationService = async (
   parameters: QueryParameters
 ) => {
+  console.log('getCurrentObservationService - parameters: ', parameters)
+  const coordinates = await setCoordinates(parameters)
+  console.log('getCurrentObservationService - coordinates: ', coordinates)
+  console.log(
+    'getCurrentObservationService - getApiRequestConfig: ',
+    getApiRequestConfig({ ...coordinates }, '/current', '/v2.0')
+  )
   return getWeatherService<WeatherbitAPI.CurrentObsGroup>(
-    getApiRequestConfig({ ...parameters }, '/current', '/v2.0')
+    getApiRequestConfig({ ...coordinates }, '/current', '/v2.0')
   )
 }
 
@@ -81,9 +89,10 @@ export const getCurrentObservationService = async (
 export const getWeeklyForecastsService = async (
   parameters: QueryParameters
 ) => {
+  const coordinates = await setCoordinates(parameters)
   return getWeatherService<WeatherbitAPI.ForecastDay>(
     getApiDailyForecastsRequestConfig(
-      { ...parameters, days: 8 }, // the forecast includes the current day
+      { ...coordinates, days: 8 }, // the forecast includes the current day
       '/forecast/daily'
     )
   )
@@ -95,9 +104,10 @@ export const getWeeklyForecastsService = async (
 export const getHourlyForecastsService = async (
   parameters: QueryParameters
 ) => {
+  const coordinates = await setCoordinates(parameters)
   return getWeatherService<WeatherbitAPI.ForecastHourly>(
     getApiHourlyForecastsRequestConfig(
-      { ...parameters, hours: 24 },
+      { ...coordinates, hours: 24 },
       '/forecast/hourly'
     )
   )

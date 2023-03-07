@@ -17,8 +17,8 @@ declare global {
     formatted?: string
   }
 
-  /** Current weather of a place */
-  type MappedObservation = Partial<{
+  /** Location data to perform reversed geocoding */
+  type LocationData = {
     /**
      * City name
      * &city=Raleigh&country=US
@@ -26,33 +26,59 @@ declare global {
      * &city=Raleigh,North+Carolina
      * */
     cityName: string
-    /**  Apparent/"Feels Like" temperature default (°C) */
-    temperature: string
-    /** Latitude & longitude (Degrees) */
-    coordinates: Coordinates
-    /** Text weather description */
-    weatherDescription: string
-    /**
-     * Weather code
-     * ex: 200 for 'Thunderstorm with light rain'
-     * @see: https://www.weatherbit.io/api/codes
-     * */
-    code: string
-    /**
-     * Weather icon code
-     * ex: 't01d', 't02d', etc
-     * @see: https://www.weatherbit.io/api/codes
-     * */
-    weatherIcon: string
-    /** Sunrise time (HH:MM am) */
-    sunrise: TimeProps
-    /** Sunset time (HH:MM am) */
-    sunset: TimeProps
-    /** Part of the day (d = day, n = night) */
-    partOfTheDay?: string
-    /** Timestamp in local time */
-    dateLocal?: DateProps
-  }>
+    /** country code, ex: FR, EN, etc */
+    countryCode: string
+  }
+
+  /** Current weather of a place */
+  type MappedObservation = Coordinates &
+    LocationData & {
+      /** ID for iterations */
+      id: string
+      /**  Apparent/"Feels Like" temperature default (°C) */
+      temperature: string
+      /** Text weather description */
+      weatherDescription: string
+      /**
+       * Weather code
+       * ex: 200 for 'Thunderstorm with light rain'
+       * @see: https://www.weatherbit.io/api/codes
+       * */
+      weatherCode: string
+      /**
+       * Weather icon code
+       * ex: 't01d', 't02d', etc
+       * @see: https://www.weatherbit.io/api/codes
+       * */
+      weatherIcon: string
+      /** Sunrise time (HH:MM am) */
+      sunrise?: TimeProps
+      /** Sunset time (HH:MM am) */
+      sunset?: TimeProps
+      /** Part of the day (d = day, n = night) */
+      partOfTheDay?: string
+      /** Timestamp in local time */
+      dateLocal?: DateProps
+    }
+
+  type DetailedObservationData = {
+    /** Apparent Maximum daily Temperature - default (°C) */
+    apparentMaximumTemperature: string
+    /** Apparent Minimum daily Temperature - default (°C) */
+    apparentMinimumTemperature: string
+    /** Relative Humidity as a percentage (%) */
+    relativeHumidity: string
+    /** Temperature (Average) - default (°C) Feels like */
+    feelsLike: string
+    /** Wind Speed (default km/h) */
+    windSpeed: string
+    /** Pressure (mb) */
+    pressure: string
+    /** Average Visibility default (KM) */
+    visibility: string
+    /** Dewpoint (Average) - default (°C) */
+    dewPoint: string
+  }
 
   /** List of current observations */
   type GetCurrentDefaultObservationsResponse = MappedObservation[]
@@ -97,6 +123,8 @@ declare global {
 
   /** Forecast information displayed in detailed view for each incomming day */
   type MappedForecast = {
+    /** ID for iterations */
+    id: string
     /** Timestamp in local time */
     timestampLocal?: DateProps
     /** Date in format "YYYY-MM-DD:HH". All datetime is in (UTC) */
@@ -121,24 +149,7 @@ declare global {
 
   /** Detailed Forecast data for one given day */
   type MappedForecastDay = {
-    currentObservation: MappedObservation & {
-      /** Apparent Maximum daily Temperature - default (°C) */
-      apparentMaximumTemperature?: string
-      /** Apparent Minimum daily Temperature - default (°C) */
-      apparentMinimumTemperature?: string
-      /** Relative Humidity as a percentage (%) */
-      relativeHumidity?: string
-      /** Temperature (Average) - default (°C) Feels like */
-      feelsLike?: string
-      /** Wind Speed (default km/h) */
-      windSpeed?: string
-      /** Pressure (mb) */
-      pressure?: string
-      /** Average Visibility default (KM) */
-      visibility?: string
-      /** Dewpoint (Average) - default (°C) */
-      dewPoint?: string
-    }
+    currentObservation: MappedObservation & DetailedObservationData
     /** Weekly weather Forecasts */
     dailyForecasts: MappedForecast[]
     /** Hourly detailed forecasts */

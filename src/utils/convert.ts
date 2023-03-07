@@ -90,16 +90,13 @@ export const dateToWeekDay = (timestamp: number): DateProps => {
 }
 
 export const timestampLocalToProps = (
-  timestampLocal: string
+  timestampLocal: string,
+  index: number
 ): LocalTimeStampProps => {
   const date = moment(timestampLocal)
-  const now = moment()
-  let nowHours = now.hour()
-
-  if (now.minute() > 0) nowHours++
 
   return {
     value: timestampLocal,
-    display: nowHours === date.hour() ? 'NOW' : date.format('ha'),
+    display: index === 0 ? 'NOW' : date.format('ha'),
   }
 }
