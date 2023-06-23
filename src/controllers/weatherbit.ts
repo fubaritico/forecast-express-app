@@ -18,8 +18,7 @@ export const getDefaultObservationsController = async (
   next: NextFunction
 ) => {
   try {
-    const response = await getDefaultObservationsService()
-    res.locals.observations = response
+    res.locals.observations = await getDefaultObservationsService()
     next()
   } catch (err) {
     res.status(500).send(err)
@@ -99,8 +98,7 @@ export const getHourlyForecastsController = async (
   next: NextFunction
 ) => {
   try {
-    const response = await getHourlyForecastsService(req.query)
-    res.locals.hourlyForecasts = response
+    res.locals.hourlyForecasts = await getHourlyForecastsService(req.query)
     next()
   } catch (err) {
     res.status(500).send(err)

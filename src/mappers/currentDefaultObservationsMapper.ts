@@ -29,7 +29,10 @@ export const currentObservationMapper = (
     currentObservation.sunset,
     currentObservation.timezone
   )
-  mappedObservation.dateLocal = dateToWeekDay(currentObservation.ts)
+  mappedObservation.dateLocal = dateToWeekDay(
+    currentObservation.ts,
+    currentObservation.timezone
+  )
 
   return mappedObservation
 }

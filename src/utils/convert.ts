@@ -79,13 +79,28 @@ export const timeToProps = (time: string, timezone: string): TimeProps => {
   }
 }
 
-export const dateToWeekDay = (timestamp: number): DateProps => {
-  const d = moment(timestampInMs(timestamp))
+export const dateToWeekDay = (
+  timestampLocal: number,
+  timezone?: string
+): DateProps => {
+  const timestamp = timestampInMs(timestampLocal)
+  const nowInUtcMode = moment(timestamp).clone().utc()
+  let localTime
+
+  if (timezone) {
+    const zone = momentTz.tz.zone(timezone)
+    const minutesOffset = zone.utcOffset(timestamp)
+
+    const momentUtcTimeFromTimestamp = moment(timestamp).clone().utc()
+    localTime = momentUtcTimeFromTimestamp
+      .clone()
+      .subtract(minutesOffset, 'minutes')
+  }
 
   return {
     timestamp,
-    weekDay: d.format('ddd'),
-    formatted: d.format('ddd, h:mm a'),
+    weekDay: nowInUtcMode.format('ddd'),
+    formatted: localTime ? localTime.format('ddd, h:mm a') : undefined,
   }
 }
 

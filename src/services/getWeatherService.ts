@@ -71,13 +71,7 @@ export const getDefaultObservationsService = async () => {
 export const getCurrentObservationService = async (
   parameters: QueryParameters
 ) => {
-  console.log('getCurrentObservationService - parameters: ', parameters)
   const coordinates = await setCoordinates(parameters)
-  console.log('getCurrentObservationService - coordinates: ', coordinates)
-  console.log(
-    'getCurrentObservationService - getApiRequestConfig: ',
-    getApiRequestConfig({ ...coordinates }, '/current', '/v2.0')
-  )
   return getWeatherService<WeatherbitAPI.CurrentObsGroup>(
     getApiRequestConfig({ ...coordinates }, '/current', '/v2.0')
   )
